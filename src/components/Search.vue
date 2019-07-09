@@ -41,8 +41,13 @@
     },
     watch:{
       message(val){
+        var cityId=this.$store.state.city.id;
         this.cancelQuest(); //在请求发出前取消上一次未完成的请求；
-        this.axios.get('/api/searchList?cityId=10&kw='+val,{
+        this.$indicator.open({
+ 					text: '加载中...',
+  				spinnerType: 'fading-circle'
+			});
+        this.axios.get('/api/searchList?cityId='+cityId+'&kw='+val,{
           cancelToken: new this.axios.CancelToken((c)=>{
             this.source = c;
         })}).then(result=>{
@@ -51,6 +56,7 @@
           var movies=result.data.data.movies;
           if(msg&&movies){
             this.movieList=movies.list;
+            this.$indicator.close();
             //console.log(this.movieList);
           }
         })

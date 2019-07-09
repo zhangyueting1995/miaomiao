@@ -4,14 +4,14 @@
 				<div class="city_hot">
 					<h2>热门城市</h2>
 					<ul class="clearfix">
-						<li v-for="(elem,i) of hotList" :key="i">{{elem.nm}}</li>
+						<v-touch tag="li" v-for="(elem,i) of hotList" :key="i" @tap="handleToCity(elem.nm,elem.id)">{{elem.nm}}</v-touch>
 					</ul>
 				</div>
 				<div class="city_sort" ref="city_sort">
 					<div v-for="(elem,i) of cityList" :key="i">
 						<h2>{{elem.index}}</h2>
 						<ul>
-							<li v-for="(cit,j) of elem.list" :key="j">{{cit.nm}}</li>
+							<v-touch tag="li" v-for="(cit,j) of elem.list" :key="j" @tap="handleToCity(cit.nm,cit.id)">{{cit.nm}}</v-touch>
 						</ul>
 					</div>
 				</div>
@@ -33,16 +33,32 @@
 			}
 		},
 		mounted(){
-			this.axios('/api/cityList').then(result=>{
-				var msg=result.data.msg;
-				if(msg==="ok"){
-					var cities=result.data.data.cities;
-					//[ { index : 'A' , list : [{ nm : '阿城' , id : 123 }] } ]
-					var {cityList,hotList}=this.formatCityList(cities);
-					this.cityList=cityList;
-					this.hotList=hotList;
-				}
-			});
+			
+			let cityList=window.localStorage.getItem('cityList');
+			let hotList=window.localStorage.getItem('hotList');
+			if(cityList&&hotList){
+				this.cityList=JSON.parse(cityList);
+				this.hotList=JSON.parse(hotList);
+			}else{
+					this.$indicator.open({
+							text: '加载中...',
+							spinnerType: 'fading-circle'
+					});
+					this.axios('/api/cityList').then(result=>{
+					var msg=result.data.msg;
+					if(msg==="ok"){
+						var cities=result.data.data.cities;
+						//[ { index : 'A' , list : [{ nm : '阿城' , id : 123 }] } ]
+						var {cityList,hotList}=this.formatCityList(cities);
+						this.cityList=cityList;
+						this.hotList=hotList;
+						window.localStorage.setItem('cityList',JSON.stringify(cityList));
+						window.localStorage.setItem('hotList',JSON.stringify(hotList));
+						this.$indicator.close();
+					}
+				});
+			}
+			
 		},
 		methods:{
 			formatCityList(cities){
@@ -75,8 +91,6 @@
 						return 0
 					}
 				});
-				console.log(cityList);
-				console.log(hotList);
 				function toCom(firstLetter){
 					for(var i=0;i<cityList.length;i++){
 						if(cityList[i].index===firstLetter){
@@ -90,7 +104,13 @@
 			handleToIndex(i){
 				var h2=this.$refs.city_sort.getElementsByTagName('h2');
 				this.$refs.city_sort.parentNode.scrollTop=h2[i].offsetTop;
-			}
+			},
+			handleToCity(nm,id){
+				window.localStorage.setItem('nowNM',nm);
+				window.localStorage.setItem('nowID',id);
+				this.$store.commit('city/CITY_INFO',{nm,id});
+				this.$router.push('/movie/nowplaying');
+			},
 		}
   }
 </script>

@@ -1,20 +1,22 @@
 <template>
   <div class="cinema_body">
-    <ul>
-      <li v-for="(item,i) of ciList" :key="i">
-        <div>
-          <span>{{item.nm}}</span>
-          <span class="q"><span class="price">{{item.sellPrice}}</span> 元起</span>
+    <mt-loadmore :top-method="loadTop" :bottom-all-loaded="allLoaded" ref="loadmore">
+      <ul>
+        <li v-for="(item,i) of ciList" :key="i">
+          <div>
+            <span>{{item.nm}}</span>
+            <span class="q"><span class="price">{{item.sellPrice}}</span> 元起</span>
+          </div>
+          <div class="address">
+            <span>{{item.addr}}</span>
+            <span>{{item.distance}}</span>
+          </div>
+          <div class="card">
+            <div v-for="(num,j) in item.tag" :key="j" :class="j|formatClass">{{j|formatCard}}</div>
         </div>
-        <div class="address">
-          <span>{{item.addr}}</span>
-          <span>{{item.distance}}</span>
-        </div>
-        <div class="card">
-          <div v-for="(num,j) in item.tag" :key="j" :class="j|formatClass">{{j|formatCard}}</div>
-       </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </mt-loadmore>
 	</div>
 </template>
 
@@ -23,16 +25,31 @@
     name:'Cilist',
     data(){
       return{
-        ciList:[]
+        ciList:[],
+        allLoaded:false,
+        prevCityId:-1
       };
     },
-    mounted(){
-      this.axios.get("/api/cinemaList?cityId=10").then((result)=>{
+    activated(){
+      var cityId=this.$store.state.city.id;
+			if(this.prevCityId==cityId){return;}
+			this.$indicator.open({
+ 					text: '加载中...',
+  				spinnerType: 'fading-circle'
+			});
+      this.axios.get("/api/cinemaList?cityId="+cityId).then((result)=>{
         if(result.data.msg==="ok"){
           this.ciList=result.data.data.cinemas;
+          this.$indicator.close();
+          this.prevCityId=cityId;
         }
-        console.log(this.ciList);
       });
+    },
+    methods:{
+      loadTop(){
+            // 加载更多数据
+        this.$refs.loadmore.onTopLoaded();  
+      },
     },
     filters:{
       formatCard(key){

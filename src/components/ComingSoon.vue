@@ -1,19 +1,21 @@
 <template>
 <div class="movie_body">
-  <ul>
-    <li v-for="(item,i) of comingList" :key="i">
-      <div class="pic_show"><img :src="item.img|setWH('128.180')"></div>
-      <div class="info_list">
-        <h2>{{item.nm}}  <img v-if="item.version=='v3d imax'" src="@/assets/3d_max.png"</h2>
-        <p><span class="person">{{item.wish}}</span> 人想看</p>
-        <p>主演: {{item.star}}</p>
-        <p>{{item.rt}} 上映</p>
-      </div>
-      <div class="btn_pre">
-        预售
-      </div>
-    </li>
-  </ul>
+  <mt-loadmore :top-method="loadTop" :bottom-all-loaded="allLoaded" ref="loadmore">
+    <ul>
+      <li v-for="(item,i) of comingList" :key="i">
+        <div class="pic_show"><img :src="item.img|setWH('128.180')"></div>
+        <div class="info_list">
+          <h2>{{item.nm}}  <img v-if="item.version=='v3d imax'" src="@/assets/3d_max.png"></h2>
+          <p><span class="person">{{item.wish}}</span> 人想看</p>
+          <p>主演: {{item.star}}</p>
+          <p>{{item.rt}} 上映</p>
+        </div>
+        <div class="btn_pre">
+          预售
+        </div>
+      </li>
+    </ul>
+  </mt-loadmore>
 </div>
 </template>
 
@@ -22,16 +24,32 @@
     name:'ComingSoon',
     data(){
       return{
-        comingList:[]
+        comingList:[],
+        allLoaded:false,
+        prevCityId:-1
       };
     },
-    mounted(){
-      this.axios.get('/api/movieComingList?cityId=10').then(result=>{
+    activated(){
+      var cityId=this.$store.state.city.id;
+			if(this.prevCityId==cityId){return;}
+      this.$indicator.open({
+ 					text: '加载中...',
+  				spinnerType: 'fading-circle'
+			});
+      this.axios.get('/api/movieComingList?cityId='+cityId).then(result=>{
         if(result.data.msg==='ok'){
           this.comingList=result.data.data.comingList;
+          this.$indicator.close();
+          this.prevCityId=cityId;
         }
         //console.log(this.comingList);
       })
+    },
+    methods:{
+       loadTop(){
+      // 加载更多数据
+        this.$refs.loadmore.onTopLoaded();  
+      },
     }
   }
 </script>

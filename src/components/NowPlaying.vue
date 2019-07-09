@@ -1,5 +1,6 @@
 <template>
 		<div class="movie_body">
+			 <mt-loadmore :top-method="loadTop" :bottom-all-loaded="allLoaded" ref="loadmore">
 				<ul>
 					<li v-for="(item,i) of movieList" :key="i">
 						<div class="pic_show"><img :src="item.img|setWH('128.180')"></div>
@@ -14,6 +15,7 @@
 						</div>
 					</li>
 				</ul>
+			 </mt-loadmore>
 			</div>
 </template>
 
@@ -22,25 +24,41 @@
 		name:"NowPlaying",
 		data() {
 			return {
-				movieList:[]
+				movieList:[],
+				allLoaded:false,
+				prevCityId:-1
 			}
 		},
-		mounted(){
-			this.axios.get("/api/movieOnInfoList?cityId=10").then(
+		activated(){
+			var cityId=this.$store.state.city.id;
+			if(this.prevCityId==cityId){return;}
+			this.$indicator.open({
+ 					text: '加载中...',
+  				spinnerType: 'fading-circle'
+			});
+			this.axios.get("/api/movieOnInfoList?cityId="+cityId).then(
 				result=>{
 					var msg=result.data.msg;
 					if(msg==="ok"){
 						this.movieList=result.data.data.movieList;
+						this.$indicator.close();
+						this.prevCityId=cityId;
 						//console.log(this.movieList)
 					}
 				}
 			);
+		},
+		methods:{
+			loadTop(){
+		// 加载更多数据
+				this.$refs.loadmore.onTopLoaded();  
+			},
 		}
   }
 </script>
 
 <style lang="scss" scoped>
-#content .movie_body{ flex:1; overflow:auto;}
+#content .movie_body{ flex:1; overflow:scroll;}
 .movie_body ul{ margin:0 12px; overflow: hidden;}
 .movie_body ul li{ margin-top:12px; display: flex; align-items:center; border-bottom: 1px #e6e6e6 solid; padding-bottom: 10px;}
 .movie_body .pic_show{ width:64px; height: 90px;}
