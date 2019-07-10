@@ -27,6 +27,22 @@ export default new Router({
 					component:()=>import('@/components/City')
 				},
 				{
+					path:'detail/1/:movieId',
+					components:{
+						default:()=>import('@/components/NowPlaying'),
+						detail:()=>import('@/components/Detail')
+					},
+					props:{detail:true}
+				},
+				{
+					path:'detail/2/:movieId',
+					components:{
+						default:()=>import('@/components/ComingSoon'),
+						detail:()=>import('@/components/Detail')
+					},
+					props:{detail:true}
+				},
+				{
 					path:'/movie',
 					redirect:'/movie/nowplaying'
 				}

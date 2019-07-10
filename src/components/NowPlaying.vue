@@ -3,9 +3,9 @@
 			 <mt-loadmore :top-method="loadTop" :bottom-all-loaded="allLoaded" ref="loadmore">
 				<ul>
 					<li v-for="(item,i) of movieList" :key="i">
-						<div class="pic_show"><img :src="item.img|setWH('128.180')"></div>
+						<v-touch tag="div" @tap="handleToDetail(item.id)" class="pic_show"><img :src="item.img|setWH('128.180')"></v-touch>
 						<div class="info_list">
-							<h2>{{item.nm}} <img v-if="item.version=='v3d imax'" src="@/assets/3d_max.png" alt=""></h2>
+							<v-touch tag="h2" @tap="handleToDetail(item.id)">{{item.nm}} <img v-if="item.version=='v3d imax'" src="@/assets/3d_max.png" alt=""></v-touch>
 							<p>观众评 <span class="grade">{{item.sc}}</span></p>
 							<p>主演: {{item.star}}</p>
 							<p>{{item.showInfo}}</p>
@@ -52,6 +52,9 @@
 			loadTop(){
 		// 加载更多数据
 				this.$refs.loadmore.onTopLoaded();  
+			},
+			handleToDetail(movieId){
+				this.$router.push("/movie/detail/1/"+movieId);
 			},
 		}
   }
