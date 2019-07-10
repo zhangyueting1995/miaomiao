@@ -19,6 +19,9 @@
       </keep-alive>
     </div>
     <tab-bar></tab-bar>
+    <transition name="fade">
+       <router-view name="detail" />
+    </transition>
   </div>
 </template>
 <script>
@@ -48,6 +51,14 @@ export default {
 }
 </script>
 <style scoped>
+.fade-enter-active{
+  transition:all .8s;
+}
+.fade-leave-active{
+  transform:translate(-100%);
+  transition:all .8s;
+}
+.fade-enter{transform:translate(-100%);}
 #content .movie_menu{ width: 100%; height: 45px; border-bottom:1px solid #e6e6e6; display: flex; justify-content:space-between; align-items:center; background:white; z-index:10;}
 .movie_menu .city_name{ margin-left: 20px; height:100%; line-height: 45px;}
 .movie_menu .city_name.router-link-active{ color: #ef4238; border-bottom: 2px #ef4238 solid;}
