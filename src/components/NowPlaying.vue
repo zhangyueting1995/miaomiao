@@ -50,8 +50,19 @@
 		},
 		methods:{
 			loadTop(){
-		// 加载更多数据
-				this.$refs.loadmore.onTopLoaded();  
+					// 加载更多数据
+				var cityId=this.$store.state.city.id;
+				this.axios.get("/api/movieOnInfoList?cityId="+cityId).then(
+					result=>{
+						var msg=result.data.msg;
+						if(msg==="ok"){
+							this.movieList=result.data.data.movieList;
+							this.prevCityId=cityId;
+							this.$refs.loadmore.onTopLoaded(); 
+						}
+					}
+				);
+				
 			},
 			handleToDetail(movieId){
 				this.$router.push("/movie/detail/1/"+movieId);

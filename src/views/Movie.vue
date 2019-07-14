@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-    <my-header title="喵喵电影"></my-header>
+    <my-header title="猪猪电影"></my-header>
     <div id="content">
       <div class="movie_menu">
 				<router-link tag="div" to="/movie/city" class="city_name">
@@ -36,13 +36,13 @@ export default {
       if(res.data.msg==="ok"){
         var nm=res.data.data.nm;
         var id=res.data.data.id;
-       if(nm===this.$store.state.city.nm){return;}
+       if(id==this.$store.state.city.id){return;}
         setTimeout(()=>{
           this.$messagebox.confirm("是否切换到您所在的城市?",`当前城市:${nm}`)
           .then(actions=>{
-            window.localStorage.setItem('nowNM',nm);
-            window.localStorage.setItem('nowID',id);
-            window.location.reload();
+           localStorage.setItem('nowNM',nm);
+           localStorage.setItem('nowID',id);
+           location.reload();
           }).catch(err=>{})
         },2000)
       }
@@ -52,13 +52,13 @@ export default {
 </script>
 <style scoped>
 .fade-enter-active{
-  transition:all .8s;
+  transition:all .5s;
 }
 .fade-leave-active{
-  transform:translate(-100%);
-  transition:all .8s;
+  transform:translateX(-100%);
+  transition:all .5s;
 }
-.fade-enter{transform:translate(-100%);}
+.fade-enter{transform:translateX(-100%);}
 #content .movie_menu{ width: 100%; height: 45px; border-bottom:1px solid #e6e6e6; display: flex; justify-content:space-between; align-items:center; background:white; z-index:10;}
 .movie_menu .city_name{ margin-left: 20px; height:100%; line-height: 45px;}
 .movie_menu .city_name.router-link-active{ color: #ef4238; border-bottom: 2px #ef4238 solid;}

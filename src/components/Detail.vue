@@ -5,7 +5,7 @@
         </my-header>
 		<div id="content" class="contentDetail">
             <div class="detail_list">
-				<div class="detail_list_bg" :style="bgStyle"></div>
+				<div class="detail_list_bg" :style="{'background-image':`url(${this.detailMovie.img.replace(/w\.h/,'148.208')})`}"></div>
 				<div class="detail_list_filter"></div>
 				<div class="detail_list_content">
 					<div class="detail_list_img">
@@ -47,8 +47,7 @@ export default {
     name : 'Detail',
     data(){
         return {
-            detailMovie : {},
-            bgStyle:{backgroundImage:'url(/images/movie_1.jpg)'}
+            detailMovie : {}
         }
     },
     components : {
@@ -66,8 +65,6 @@ export default {
             var msg = res.data.msg;
             if( msg === 'ok' ){
                 this.detailMovie = res.data.data.detailMovie;
-                this.bgStyle.backgroundImage=
-                `url(${this.detailMovie.img.replace(/w\.h/,'148.208')})`;
                 this.$nextTick(()=>{
                     new Swiper(this.$refs.detail_player , {
                         slidesPerView : 'auto',

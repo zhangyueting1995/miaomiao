@@ -106,8 +106,8 @@
 				this.$refs.city_sort.parentNode.scrollTop=h2[i].offsetTop;
 			},
 			handleToCity(nm,id){
-				window.localStorage.setItem('nowNM',nm);
-				window.localStorage.setItem('nowID',id);
+				localStorage.setItem('nowNM',nm);
+				localStorage.setItem('nowID',id);
 				this.$store.commit('city/CITY_INFO',{nm,id});
 				this.$router.push('/movie/nowplaying');
 			},

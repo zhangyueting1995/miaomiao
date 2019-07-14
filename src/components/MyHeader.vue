@@ -9,7 +9,7 @@ export default {
   name:'MyHeader',
   props:{
     title:{
-      default:"喵喵电影",
+      default:"猪猪电影",
     }
   }
 }

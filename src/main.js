@@ -14,7 +14,7 @@ Vue.use(VueTouch, {name: 'v-touch'})
 Vue.config.productionTip = false
 //设置过滤器
 Vue.filter("setWH",(url,arg)=>{
-  return url.replace(/w\.h/,arg)
+  return url.replace(/w\.h/,arg);
 });
 new Vue({
   router, 

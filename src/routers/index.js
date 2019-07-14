@@ -3,8 +3,10 @@ import Router from 'vue-router'
 Vue.use(Router)
 export default new Router({
   mode: 'history',
-  base: process.env.BASE_URL,
+	//base: process.env.BASE_URL,
+	base:'zhuzhu',
   routes: [
+		//MOVIE
     {
       path:'/movie',
       name:'Movie',
@@ -47,21 +49,54 @@ export default new Router({
 					redirect:'/movie/nowplaying'
 				}
 			]
-    },
+		},
+		//mine
     {
       path:'/mine',
       name:'Mine',
-      component:()=>import('@/views/Mine')
-    },
+			component:()=>import('@/views/Mine'),
+			children:[
+				{
+					path:'login',
+					name:'Login',
+					component:()=>import('@/components/Login')
+				},
+				{
+					path:'register',
+					name:'Register',
+					component:()=>import('@/components/Register')
+				},
+				{
+					path:'findpwd',
+					name:'findPwd',
+					component:()=>import('@/components/findPwd')
+				},
+				{
+					path:'center',
+					name:'Center',
+					component:()=>import('@/components/Center')
+				},
+				{
+					path:'/mine',
+					redirect:'/mine/login'
+				}
+			]
+		},
+		//cinema
     {
       path:'/cinema',
       name:'Cinema',
-			component:()=>import('@/views/Cinema')
+			component:()=>import('@/views/Cinema'),
+		},
+		{
+			path:'/develop',
+			name:'Develop',
+			component:()=>import('@/components/Develop')
 		},
 		//路由重定向到/movie
     {
-			path:'/*',
-			redirect:'/movie'
+		path:'/*',
+		redirect:'/movie'
     }
   ]
 })

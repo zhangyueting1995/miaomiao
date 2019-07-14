@@ -43,12 +43,20 @@
           this.prevCityId=cityId;
         }
         //console.log(this.comingList);
-      })
+      });
     },
     methods:{
        loadTop(){
       // 加载更多数据
-        this.$refs.loadmore.onTopLoaded();  
+        var cityId=this.$store.state.city.id;
+        this.axios.get('/api/movieComingList?cityId='+cityId).then(result=>{
+          if(result.data.msg==='ok'){
+            this.comingList=result.data.data.comingList;
+            this.prevCityId=cityId;
+            this.$refs.loadmore.onTopLoaded(); 
+          }
+          //console.log(this.comingList);
+        }); 
       },
       handleToDetail(movieId){
 				this.$router.push("/movie/detail/2/"+movieId);

@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <my-header title="我的喵喵"></my-header>
+  <div class="mine_container">
+    <my-header title="我的猪猪"></my-header>
     <div id="content"></div>
-    <Login></Login>
+    <router-view/>
     <tab-bar></tab-bar>
   </div>
 </template>
@@ -16,7 +16,6 @@ export default {
 }
 </script>
 <style scoped>
-
 </style>
 
 

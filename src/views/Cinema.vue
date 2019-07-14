@@ -1,17 +1,17 @@
 <template>
   <div>
-    <my-header title="喵喵影院"></my-header>
+    <my-header title="猪猪影院"></my-header>
     <div id="content">
       <div class="cinema_menu">
-				<div class="city_switch">
+				<router-link tag="div" to="/develop" class="city_switch">
 					全城 <i class="iconfont icon-lower-triangle"></i>
-				</div>
-				<div class="brand_swtich">
+				</router-link>
+				<router-link tag="div" to="/develop" class="brand_swtich">
 					品牌 <i class="iconfont icon-lower-triangle"></i>
-				</div>
-				<div class="feature_switch">
+				</router-link>
+				<router-link tag="div" to="/develop" class="feature_switch">
 					特色 <i class="iconfont icon-lower-triangle"></i>
-				</div>
+				</router-link>
 			</div>
       <Cilist></Cilist>
     </div>

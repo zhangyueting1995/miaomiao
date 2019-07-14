@@ -1,6 +1,6 @@
 const state={
-  nm:window.localStorage.getItem('nowNM')||"北京",
-  id:window.localStorage.getItem('nowID')||1
+  nm:localStorage.getItem('nowNM')||"北京",
+  id:localStorage.getItem('nowID')||1
 };
 const mutations={
   CITY_INFO(state,payload){

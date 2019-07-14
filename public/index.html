@@ -9,13 +9,34 @@
     <link rel="stylesheet" href="<%= BASE_URL %>css/iconfont/iconfont.css">
     <link rel="stylesheet" href="<%= BASE_URL %>libs/swiper-4.1.0.min.css">
     <script src="<%= BASE_URL %>libs/swiper-4.1.0.min.js"></script>
-    <title>miaomiao</title>
+    <title>zhuzhu</title>
+    <style>
+      #app{
+        display:flex;
+        height:100%;
+      }
+      #app>div{
+        margin:auto;
+      }
+      #app>div>img{
+        width:100px;
+      }
+      #app>div p{
+        color: #666;
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
     <noscript>
       <strong>We're sorry but miaomiao doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    <div id="app"></div>
+    <div id="app">
+      <div>
+        <img src="<%= BASE_URL %>loading.png" alt="">
+        <p> 努力加载中...</p>
+      </div>
+    </div>
     <!-- built files will be auto injected -->
   </body>
 </html>
